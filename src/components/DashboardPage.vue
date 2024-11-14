@@ -10,11 +10,7 @@
           aria-hidden="true"
           id="iconSidenav"
         ></i>
-        <a
-          class="navbar-brand m-0"
-          href="https://demos.creative-tim.com/soft-ui-dashboard/pages/dashboard.html"
-          target="_blank"
-        >
+        <a class="navbar-brand m-0" href="/">
           <img src="logo.png" class="navbar-brand-img h-100" alt="main_logo" />
           <span class="ms-1 font-weight-bold">Komgrip Technologies</span>
         </a>
@@ -347,8 +343,22 @@
               <div class="card-header d-flex justify-content-between">
                 <h5>Cryptocurrencies</h5>
                 <div>
-                  <button class="btn btn-outline-danger mx-2" style="width: 85px;"><i class="fas fa-chevron-left"/></button>
-                  <button class="btn btn-outline-danger mx-2" style="width: 85px;"><i class="fas fa-chevron-right"/></button>
+                  <button
+                    class="btn btn-outline-danger mx-2"
+                    style="width: 85px"
+                    :disabled="beforeRecord < 5"
+                    @click="previousPage()"
+                  >
+                    <i class="fas fa-chevron-left" />
+                  </button>
+                  <button
+                    class="btn btn-outline-danger mx-2"
+                    style="width: 85px"
+                    :disabled="afterRecord == coinData.length"
+                    @click="nextPage()"
+                  >
+                    <i class="fas fa-chevron-right" />
+                  </button>
                 </div>
               </div>
               <div class="table-responsive my-2">
@@ -389,11 +399,11 @@
                   </thead>
                   <tbody>
                     <tr
-                      style="font-size: small;"
-                      v-for="(item, index) in coinData.slice(0, 5)"
-                      :key="index"
+                      style="font-size: small"
+                      v-for="item in coinData.slice(beforeRecord, afterRecord)"
+                      :key="item.rank"
                     >
-                      <td class="text-center">{{ index + 1 }}.</td>
+                      <td class="text-center">{{ item.rank }}.</td>
                       <td>{{ item.name }}</td>
                       <td class="text-center">{{ item.symbol }}</td>
                       <td class="text-center">
@@ -460,6 +470,8 @@ export default {
   data() {
     return {
       coinData: [],
+      beforeRecord: 0,
+      afterRecord: 5,
       BTC: {
         usd: "-",
         percent: "-",
@@ -539,6 +551,21 @@ export default {
         this.DOGE.minusValue = parseFloat(DOGE[0].changePercent24Hr) < 0;
       });
     },
+    nextPage() {
+      this.beforeRecord += 5;
+      this.afterRecord += 5;
+    },
+    previousPage() {
+      this.beforeRecord -= 5;
+      this.afterRecord -= 5;
+    },
   },
 };
 </script>
+
+<style>
+button:disabled {
+  cursor: not-allowed;
+  pointer-events: all !important;
+}
+</style>
