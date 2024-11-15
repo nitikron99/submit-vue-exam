@@ -1,14 +1,14 @@
 <template>
-  <DashboardPage/>
+  <AppLayout/>
 </template>
 
 <script>
-import DashboardPage from './components/DashboardPage.vue'
+import AppLayout from './components/AppLayout.vue'
 
 export default {
   name: 'App',
   components: {
-    DashboardPage
+    AppLayout
   }
 }
 </script>
