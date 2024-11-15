@@ -218,7 +218,7 @@
                 <button
                   class="btn btn-outline-danger mx-2"
                   style="width: 85px"
-                  :disabled="afterRecord == coinData.length"
+                  :disabled="afterRecord >= coinData.length"
                   @click="nextPage()"
                 >
                   <i class="fas fa-chevron-right" />
@@ -416,7 +416,15 @@ export default {
     },
     nextPage() {
       this.beforeRecord += 5;
-      this.afterRecord += 5;
+
+      let numberForIncrease;
+      if (this.afterRecord + 5 > this.coinData.length) {
+        numberForIncrease = this.coinData.length - this.afterRecord;
+      } else {
+        numberForIncrease = 5;
+      }
+
+      this.afterRecord += numberForIncrease;
     },
     previousPage() {
       this.beforeRecord -= 5;
